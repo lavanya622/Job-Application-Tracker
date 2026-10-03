@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerTrack — Job Application Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <i class="fa-solid fa-briefcase logo-icon"></i>
+                    <span class="logo-text">CareerTrack</span>
+                </div>
+                <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close Navigation">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="applications">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Applications</span>
+                </button>
+                <button class="nav-item" data-tab="interviews">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Interviews</span>
+                </button>
+                <button class="nav-item" data-tab="companies">
+                    <i class="fa-solid fa-building"></i>
+                    <span>Companies</span>
+                </button>
+                <button class="nav-item" data-tab="analytics">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analytics</span>
+                </button>
+                <button class="nav-item" data-tab="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="workspace-info">
+                    <p class="ws-title">CareerTrack</p>
+                    <p class="ws-sub">Job Search Workspace</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <button class="mobile-toggle-btn" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h1 class="page-title" id="page-title">Dashboard</h1>
+                        <p class="page-subtitle" id="page-subtitle">Organize your applications. Track your progress. Build your career.</p>
+                    </div>
+                </div>
+
+                <div class="navbar-right">
+                    <div class="search-bar-global">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="global-search-input" placeholder="Search applications, companies..." aria-label="Global Search">
+                    </div>
+                    
+                    <div class="notification-wrapper">
+                        <button class="icon-btn" id="notification-btn" aria-label="Notifications">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="notification-badge hidden" id="notification-badge">0</span>
+                        </button>
+                        <div class="notification-dropdown hidden" id="notification-dropdown">
+                            <div class="notification-header">
+                                <h3>Notifications</h3>
+                                <span class="clear-notifs-btn" id="clear-notifs-btn">Dismiss All</span>
+                            </div>
+                            <div class="notification-list" id="notification-list">
+                                <!-- Dynamic notifications -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="icon-btn" id="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    </button>
+
+                    <div class="user-avatar" title="CSE Student Candidate">LG</div>
+                </div>
+            </header>
+
+            <!-- Main Dynamic Content Views -->
+            <main class="content-body">
+                <!-- VIEW 1: DASHBOARD -->
+                <section class="view-section active" id="view-dashboard">
+                    <div class="dashboard-welcome">
+                        <div>
+                            <h2>Good morning 👋</h2>
+                            <p>Here's your job search overview. Stay organized and keep moving forward.</p>
+                        </div>
+                        <button class="btn btn-primary open-add-modal-btn">
+                            <i class="fa-solid fa-plus"></i> Add Application
+                        </button>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-blue"><i class="fa-solid fa-folder-open"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Total Applications</span>
+                                <h3 class="stat-value" id="stat-total">0</h3>
+                                <span class="stat-sub" id="stat-total-sub">0 added this month</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-amber"><i class="fa-solid fa-spinner"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Active Applications</span>
+                                <h3 class="stat-value" id="stat-active">0</h3>
+                                <span class="stat-sub" id="stat-active-sub">In screening/interview</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-purple"><i class="fa-solid fa-comments"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Interviews</span>
+                                <h3 class="stat-value" id="stat-interviews">0</h3>
+                                <span class="stat-sub" id="stat-interviews-sub">Scheduled rounds</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-emerald"><i class="fa-solid fa-award"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Offers</span>
+                                <h3 class="stat-value" id="stat-offers">0</h3>
+                                <span class="stat-sub" id="stat-offers-sub">Received offers</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-rose"><i class="fa-solid fa-circle-xmark"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Rejected</span>
+                                <h3 class="stat-value" id="stat-rejected">0</h3>
+                                <span class="stat-sub" id="stat-rejected-sub">Closed opportunities</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Funnel & Status Chart Section -->
+                    <div class="grid-two-col">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-filter"></i> Application Funnel</h3>
+                            </div>
+                            <div class="funnel-container" id="funnel-container">
+                                <!-- Dynamic Funnel Rendered Here -->
+                            </div>
+                        </div>
+
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-chart-pie"></i> Application Status</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="dashboardStatusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Activity & Quick Reminders -->
+                    <div class="grid-two-col">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-chart-column"></i> Monthly Application Activity</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="dashboardActivityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-clock-rotate-left"></i> Follow-Up Reminders</h3>
+                            </div>
+                            <div class="reminder-list" id="dashboard-reminders-list">
+                                <!-- Dynamic Reminders -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Applications & Upcoming Interviews -->
+                    <div class="grid-two-col">
+                        <div class="card dashboard-card span-col-2">
+                            <div class="card-header flex-between">
+                                <h3><i class="fa-solid fa-clock"></i> Recent Applications</h3>
+                                <button class="btn btn-secondary btn-sm nav-link-btn" data-tab="applications">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table" id="recent-applications-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Company</th>
+                                            <th>Position</th>
+                                            <th>Applied Date</th>
+                                            <th>Status</th>
+                                            <th>Next Action</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-apps-tbody">
+                                        <!-- Dynamic Table Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: APPLICATIONS -->
+                <section class="view-section" id="view-applications">
+                    <div class="toolbar-card card">
+                        <div class="toolbar-header">
+                            <div class="app-count-group">
+                                <h2>Applications</h2>
+                                <span class="badge badge-neutral" id="apps-total-badge">0 total</span>
+                            </div>
+                            <div class="toolbar-actions">
+                                <div class="view-toggle-btns">
+                                    <button class="toggle-btn active" id="view-cards-btn" title="Card View">
+                                        <i class="fa-solid fa-grip"></i> Cards
+                                    </button>
+                                    <button class="toggle-btn" id="view-table-btn" title="Table View">
+                                        <i class="fa-solid fa-table-list"></i> Table
+                                    </button>
+                                </div>
+                                <button class="btn btn-outline" id="toggle-filters-btn">
+                                    <i class="fa-solid fa-filter"></i> Filters
+                                </button>
+                                <button class="btn btn-primary open-add-modal-btn">
+                                    <i class="fa-solid fa-plus"></i> Add Application
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Search, Filter & Bulk Actions Panel -->
+                        <div class="toolbar-controls">
+                            <div class="search-input-group">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="app-search-input" placeholder="Search company, job title, notes...">
+                            </div>
+
+                            <div class="sort-input-group">
+                                <label for="app-sort-select">Sort By:</label>
+                                <select id="app-sort-select" class="form-control">
+                                    <option value="newest">Newest Application</option>
+                                    <option value="oldest">Oldest Application</option>
+                                    <option value="company-asc">Company (A-Z)</option>
+                                    <option value="company-desc">Company (Z-A)</option>
+                                    <option value="interview-near">Upcoming Interview</option>
+                                    <option value="salary-high">Salary (High to Low)</option>
+                                    <option value="salary-low">Salary (Low to High)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Expandable Filter Panel -->
+                        <div class="filter-panel hidden" id="filter-panel">
+                            <div class="filter-grid">
+                                <div class="filter-group">
+                                    <label>Status</label>
+                                    <select id="filter-status" class="form-control">
+                                        <option value="">All Statuses</option>
+                                        <option value="Wishlist">Wishlist</option>
+                                        <option value="Applied">Applied</option>
+                                        <option value="Screening">Screening</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Offer">Offer</option>
+                                        <option value="Accepted">Accepted</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Withdrawn">Withdrawn</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Job Type</label>
+                                    <select id="filter-jobtype" class="form-control">
+                                        <option value="">All Types</option>
+                                        <option value="Full Time">Full Time</option>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Contract">Contract</option>
+                                        <option value="Part Time">Part Time</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Work Mode</label>
+                                    <select id="filter-workmode" class="form-control">
+                                        <option value="">All Modes</option>
+                                        <option value="Remote">Remote</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                        <option value="On-site">On-site</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label>Source</label>
+                                    <select id="filter-source" class="form-control">
+                                        <option value="">All Sources</option>
+                                        <option value="LinkedIn">LinkedIn</option>
+                                        <option value="Company Website">Company Website</option>
+                                        <option value="Indeed">Indeed</option>
+                                        <option value="Referral">Referral</option>
+                                        <option value="College/University">College/University</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group checkbox-filter">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="filter-priority-only">
+                                        Priority Only (Starred ★)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn btn-secondary btn-sm" id="clear-filters-btn">Clear Filters</button>
+                            </div>
+                        </div>
+
+                        <!-- Bulk Action Bar -->
+                        <div class="bulk-bar hidden" id="bulk-bar">
+                            <span class="bulk-count" id="bulk-selected-count">0 selected</span>
+                            <div class="bulk-buttons">
+                                <button class="btn btn-danger btn-sm" id="bulk-delete-btn"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+                                <button class="btn btn-secondary btn-sm" id="bulk-export-btn"><i class="fa-solid fa-download"></i> Export Selected</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Application Views Container -->
+                    <div id="applications-container-cards" class="cards-grid">
+                        <!-- Rendered via JS -->
+                    </div>
+
+                    <div id="applications-container-table" class="card hidden">
+                        <div class="table-responsive">
+                            <table class="data-table" id="apps-full-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="select-all-checkbox"></th>
+                                        <th>Company</th>
+                                        <th>Position</th>
+                                        <th>Location</th>
+                                        <th>Applied Date</th>
+                                        <th>Status</th>
+                                        <th>Next Action</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="apps-table-tbody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: INTERVIEWS -->
+                <section class="view-section" id="view-interviews">
+                    <div class="grid-two-col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-calendar-day"></i> Calendar Schedule View</h3>
+                            </div>
+                            <div class="schedule-container" id="interviews-schedule-list">
+                                <!-- Dynamic interview calendar agenda -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-list-check"></i> Interview Tracker</h3>
+                            </div>
+                            <div class="interview-cards-list" id="interviews-full-list">
+                                <!-- Dynamic complete interviews view -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: COMPANIES -->
+                <section class="view-section" id="view-companies">
+                    <div class="companies-grid" id="companies-grid">
+                        <!-- Dynamic company cards aggregated from applications -->
+                    </div>
+                </section>
+
+                <!-- VIEW 5: ANALYTICS -->
+                <section class="view-section" id="view-analytics">
+                    <!-- Response Rate Metrics Hero -->
+                    <div class="card analytics-hero-card">
+                        <div class="analytics-hero-header">
+                            <div>
+                                <h2>Response Rate Analytics</h2>
+                                <p>Calculated as response actions beyond Initial Application / Wishlist state.</p>
+                            </div>
+                            <div class="rate-badge" id="analytics-response-rate-badge">0%</div>
+                        </div>
+                        <div class="hero-stats-row">
+                            <div>
+                                <span class="label">Total Applications</span>
+                                <p class="val" id="analytics-total-apps">0</p>
+                            </div>
+                            <div>
+                                <span class="label">Total Responses</span>
+                                <p class="val" id="analytics-total-responses">0</p>
+                            </div>
+                            <div>
+                                <span class="label">Interview Conversion</span>
+                                <p class="val" id="analytics-interview-rate">0%</p>
+                            </div>
+                            <div>
+                                <span class="label">Offer Conversion</span>
+                                <p class="val" id="analytics-offer-rate">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Career Insights Banner -->
+                    <div class="card insights-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-lightbulb"></i> Career Data Insights</h3>
+                        </div>
+                        <div class="insights-list" id="insights-list">
+                            <!-- Data Driven Insights Generated Here -->
+                        </div>
+                    </div>
+
+                    <!-- Multi-Chart Analytics Grid -->
+                    <div class="grid-two-col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Application Sources</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chartSources"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Work Mode Distribution</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chartWorkMode"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Job Type Breakdown</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chartJobType"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Application Status Distribution</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chartStatusDist"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 6: SETTINGS -->
+                <section class="view-section" id="view-settings">
+                    <div class="settings-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-palette"></i> Appearance</h3>
+                            </div>
+                            <div class="setting-item">
+                                <div>
+                                    <strong>Theme Selection</strong>
+                                    <p>Choose your visual preference for the application workspace.</p>
+                                </div>
+                                <div class="theme-options-group">
+                                    <button class="btn btn-outline active" id="set-theme-light">Light</button>
+                                    <button class="btn btn-outline" id="set-theme-dark">Dark</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-sliders"></i> Default Application View</h3>
+                            </div>
+                            <div class="setting-item">
+                                <div>
+                                    <strong>Preferred View Style</strong>
+                                    <p>Set default display mode when accessing Applications management.</p>
+                                </div>
+                                <div class="theme-options-group">
+                                    <button class="btn btn-outline active" id="set-view-cards">Card Grid</button>
+                                    <button class="btn btn-outline" id="set-view-table">Data Table</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-database"></i> Data Management</h3>
+                            </div>
+                            <div class="setting-actions-list">
+                                <div class="setting-item">
+                                    <div>
+                                        <strong>Export Application Data</strong>
+                                        <p>Download your complete job search portfolio in JSON or CSV format.</p>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-secondary" id="export-json-btn"><i class="fa-solid fa-file-code"></i> Export JSON</button>
+                                        <button class="btn btn-secondary" id="export-csv-btn"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                                <div class="setting-item">
+                                    <div>
+                                        <strong>Import Data File</strong>
+                                        <p>Upload a previously exported JSON backup file to restore records.</p>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="import-file-input" accept=".json" class="hidden">
+                                        <button class="btn btn-outline" id="trigger-import-btn"><i class="fa-solid fa-file-import"></i> Import JSON</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                                <div class="setting-item">
+                                    <div>
+                                        <strong>Load Demo Workspace Data</strong>
+                                        <p>Populate realistic sample records to explore all dashboard features.</p>
+                                    </div>
+                                    <button class="btn btn-secondary" id="load-demo-btn"><i class="fa-solid fa-flask"></i> Load Demo Data</button>
+                                </div>
+                                <hr class="divider">
+                                <div class="setting-item">
+                                    <div>
+                                        <strong class="text-danger">Clear All Workspace Data</strong>
+                                        <p>Permanently remove all job records and statistics from LocalStorage.</p>
+                                    </div>
+                                    <button class="btn btn-danger" id="clear-data-btn"><i class="fa-solid fa-trash-can"></i> Clear All Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL 1: ADD / EDIT APPLICATION MODAL -->
+    <div class="modal-backdrop hidden" id="app-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modal-form-title">Add New Application</h3>
+                <button class="close-modal-btn" id="close-app-modal" aria-label="Close Modal">&times;</button>
+            </div>
+            <form id="app-form" class="modal-form">
+                <input type="hidden" id="form-app-id">
+                
+                <!-- Section 1: Job Information -->
+                <div class="form-section">
+                    <h4>1. Job Information</h4>
+                    <div class="form-grid">
+                        <div class="form-group span-col-2">
+                            <label for="form-job-title" class="required">Job Title</label>
+                            <input type="text" id="form-job-title" class="form-control" required placeholder="e.g. Software Engineer">
+                        </div>
+                        <div class="form-group span-col-2">
+                            <label for="form-company" class="required">Company Name</label>
+                            <input type="text" id="form-company" class="form-control" required placeholder="e.g. Google">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-location">Location</label>
+                            <input type="text" id="form-location" class="form-control" placeholder="e.g. Hyderabad, India">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-job-type">Job Type</label>
+                            <select id="form-job-type" class="form-control">
+                                <option value="Full Time">Full Time</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Part Time">Part Time</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-work-mode">Work Mode</label>
+                            <select id="form-work-mode" class="form-control">
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Remote">Remote</option>
+                                <option value="On-site">On-site</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-job-url">Job Posting URL</label>
+                            <input type="url" id="form-job-url" class="form-control" placeholder="https://careers.google.com/jobs/...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Application Details -->
+                <div class="form-section">
+                    <h4>2. Application Details</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="form-app-date" class="required">Application Date</label>
+                            <input type="date" id="form-app-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-status" class="required">Status</label>
+                            <select id="form-status" class="form-control" required>
+                                <option value="Wishlist">Wishlist</option>
+                                <option value="Applied">Applied</option>
+                                <option value="Screening">Screening</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Offer">Offer</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Withdrawn">Withdrawn</option>
+                            </select>
+                        </div>
+                        <div class="form-group span-col-2">
+                            <label for="form-source">Application Source</label>
+                            <select id="form-source" class="form-control">
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Company Website">Company Website</option>
+                                <option value="Indeed">Indeed</option>
+                                <option value="Referral">Referral</option>
+                                <option value="College/University">College/University</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Compensation (Optional) -->
+                <div class="form-section">
+                    <h4>3. Compensation (Optional)</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="form-salary-min">Min Salary / CTC</label>
+                            <input type="number" id="form-salary-min" class="form-control" placeholder="800000">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-salary-max">Max Salary / CTC</label>
+                            <input type="number" id="form-salary-max" class="form-control" placeholder="1200000">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-currency">Currency</label>
+                            <select id="form-currency" class="form-control">
+                                <option value="INR">INR (₹)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Recruiter Details (Optional) -->
+                <div class="form-section">
+                    <h4>4. Recruiter Information (Optional)</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="form-recruiter-name">Recruiter Name</label>
+                            <input type="text" id="form-recruiter-name" class="form-control" placeholder="Jane Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-recruiter-email">Recruiter Email</label>
+                            <input type="email" id="form-recruiter-email" class="form-control" placeholder="recruiter@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-recruiter-phone">Recruiter Phone</label>
+                            <input type="text" id="form-recruiter-phone" class="form-control" placeholder="+91 9876543210">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-recruiter-linkedin">Recruiter LinkedIn</label>
+                            <input type="url" id="form-recruiter-linkedin" class="form-control" placeholder="https://linkedin.com/in/recruiter">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Interview Details (Conditional) -->
+                <div class="form-section" id="form-section-interview">
+                    <h4>5. Interview Details</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="form-interview-date">Interview Date</label>
+                            <input type="date" id="form-interview-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-interview-time">Interview Time</label>
+                            <input type="time" id="form-interview-time" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-interview-type">Interview Type</label>
+                            <select id="form-interview-type" class="form-control">
+                                <option value="Technical">Technical</option>
+                                <option value="HR">HR</option>
+                                <option value="Managerial">Managerial</option>
+                                <option value="Assessment">Assessment</option>
+                                <option value="Final Round">Final Round</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-meeting-link">Meeting Link</label>
+                            <input type="url" id="form-meeting-link" class="form-control" placeholder="https://meet.google.com/...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Follow-up & Notes -->
+                <div class="form-section">
+                    <h4>6. Follow-up & Notes</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="form-followup-date">Follow-up Date</label>
+                            <input type="date" id="form-followup-date" class="form-control">
+                        </div>
+                        <div class="form-group span-col-2">
+                            <label for="form-followup-notes">Follow-up Action Notes</label>
+                            <input type="text" id="form-followup-notes" class="form-control" placeholder="Follow up with HR regarding round 2 schedule">
+                        </div>
+                        <div class="form-group span-col-2">
+                            <label for="form-notes">Additional Notes</label>
+                            <textarea id="form-notes" class="form-control" rows="3" placeholder="Key tech stack requested, referrals, or preparation tips..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-app-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-app-btn">Save Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: APPLICATION DETAILS & TIMELINE MODAL -->
+    <div class="modal-backdrop hidden" id="details-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <div>
+                    <span class="badge" id="details-status-badge">Status</span>
+                    <h2 id="details-job-title" class="details-title">Job Title</h2>
+                    <p id="details-company-sub" class="details-sub">Company · Location</p>
+                </div>
+                <button class="close-modal-btn" id="close-details-modal" aria-label="Close Modal">&times;</button>
+            </div>
+            
+            <div class="modal-body" id="details-modal-body">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+
+            <div class="modal-footer flex-between">
+                <div>
+                    <button class="btn btn-danger btn-sm" id="details-delete-btn"><i class="fa-solid fa-trash"></i> Delete</button>
+                </div>
+                <div class="btn-group">
+                    <a href="#" target="_blank" id="details-job-url-btn" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Posting</a>
+                    <button class="btn btn-primary btn-sm" id="details-edit-btn"><i class="fa-solid fa-pen-to-square"></i> Edit Application</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: CONFIRM DELETE MODAL -->
+    <div class="modal-backdrop hidden" id="confirm-modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-header">
+                <h3 id="confirm-modal-title">Confirm Delete</h3>
+                <button class="close-modal-btn" id="close-confirm-modal" aria-label="Close Modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-modal-message">Are you sure you want to perform this action? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+                <button class="btn btn-danger" id="confirm-proceed-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

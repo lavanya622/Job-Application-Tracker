@@ -1,4 +1,4 @@
-# Job Application Tracker
+# CareerTrack Job Application Tracker
 
 > **Organize your applications. Track your progress. Build your career.**
 

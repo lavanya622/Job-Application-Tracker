@@ -710,7 +710,6 @@ This structure keeps the project organized while demonstrating how a real fronte
 
 The Applications page provides a centralized workspace for viewing and managing job applications.
 
-![CareerTrack Applications](screenshots/applications.png)
 
 ---
 
@@ -718,7 +717,6 @@ The Applications page provides a centralized workspace for viewing and managing 
 
 The Dashboard provides an overview of application progress, interviews, offers, rejections, and follow-up activity.
 
-![CareerTrack Dashboard](screenshots/dashboard.png)
 
 ---
 
@@ -726,7 +724,6 @@ The Dashboard provides an overview of application progress, interviews, offers, 
 
 The Add Application page allows users to enter detailed information about a job opportunity.
 
-![CareerTrack Add Application](screenshots/add-application.png)
 
 ---
 
@@ -734,7 +731,6 @@ The Add Application page allows users to enter detailed information about a job 
 
 The Interviews page helps users track scheduled and completed interviews.
 
-![CareerTrack Interviews](screenshots/interviews.png)
 
 ---
 
@@ -742,7 +738,6 @@ The Interviews page helps users track scheduled and completed interviews.
 
 The Companies page provides an organized view of companies associated with job applications.
 
-![CareerTrack Companies](screenshots/companies.png)
 
 ---
 
@@ -750,7 +745,6 @@ The Companies page provides an organized view of companies associated with job a
 
 The Analytics page provides visual insights into job-search activity.
 
-![CareerTrack Analytics](screenshots/analytics.png)
 
 ---
 
@@ -758,7 +752,6 @@ The Analytics page provides visual insights into job-search activity.
 
 CareerTrack supports a dark theme for a comfortable viewing experience.
 
-![CareerTrack Dark Mode](screenshots/dark-mode.png)
 
 ---
 
@@ -830,6 +823,3 @@ CareerTrack was developed as a portfolio project to demonstrate practical fronte
 
 ---
 
-## 📄 License
-
-This project is created for **educational, learning, and portfolio purposes**.
